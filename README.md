@@ -1,98 +1,122 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Staking API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project implements a backend service for staking functionality, built with NestJS and PostgreSQL. It simulates staking behavior similar to Hyperliquid Staking but operates entirely off-chain, without using smart contracts.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Users can stake tokens, claim rewards based on an APR model, and withdraw their staked tokens through simple REST API endpoints.
 
-## Description
+## Overview
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This API allows users to stake tokens off-chain, accrue rewards over time based on a configurable APR, and manage staking actions such as claiming rewards and unstaking. It is built entirely as a backend system with no blockchain integration, ideal for prototyping or centralized staking simulations.
 
-## Project setup
+The API supports the following features:
 
-```bash
-$ yarn install
-```
+- Stake tokens with a wallet address
+- Claim accrued rewards
+- Unstake tokens and retrieve final rewards
+- View current staking details
+- Configure APR (Annual Percentage Rate) from environment
 
-## Compile and run the project
+## Technical Stack
 
-```bash
-# development
-$ yarn run start
+- **Framework**: NestJS
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: TypeORM
 
-# watch mode
-$ yarn run start:dev
+## Getting Started
 
-# production mode
-$ yarn run start:prod
-```
+### Prerequisites
 
-## Run tests
+- Node.js (v16 or higher)
+- yarn
+- Docker and Docker Compose (for local PostgreSQL instance)
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+git clone https://github.com/soban-khan/staking-api.git
+cd staking-api
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. Install dependencies:
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+yarn install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+3. Set up environment variables:
 
-## Resources
+The project includes a `.env` file. Create your own `.env` file with appropriate values.
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+PORT = 3000
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+PSQL_HOST=localhost
+PSQL_PORT=5432
+PSQL_USERNAME=username
+PSQL_PASSWORD=password
+PSQL_DATABASE=database
+PSQL_SYNCHRONIZE = true
 
-## Support
+JWT_AUTHSECRET = authentication_secret
+JWT_EXPIRY = 8h
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Running the Application
 
-## Stay in touch
+1. Start the PostgreSQL database using Docker:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+docker-compose up -d
+```
 
-## License
+2. Run the application:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+# Development mode with hot reload
+yarn run start:dev
+
+# Production mode
+yarn run build
+yarn run start:prod
+
+The API will be available at: http://localhost:3000 by default
+```
+
+3. API Documentation
+
+```bash
+The API documentation (Swagger) will be available at: http://localhost:3000/docs by default
+```
+
+## Reward Calculation
+
+Rewards are calculated using a simple time-weighted APR formula:
+
+```bash
+reward = (amount * APR / 100) * (daysStaked / 365)
+```
+
+## Design Decisions and Trade-offs
+
+### Data Storage
+
+```bash
+Timestamps for reward calculation: Rewards are not calculated in real-time but inferred based on time elapsed between stake and claim/unstake.
+
+Single-stake model per wallet: Each wallet can have only one active stake. Extending to multiple stakes would require an indexed staking history table.
+
+APR as environment config: Configurable through .env for simplicity; not stored per-user or per-stake.
+```
+
+### Trade-offs
+
+```bash
+No blockchain verification: This API simulates staking and cannot verify actual wallet balances or signatures.
+
+Manual trust: All inputs are trusted (e.g., wallet address format), but can be extended with wallet verification or login flows.
+
+Precision: Rewards are calculated using simple math with floating-point numbers; consider using BigInt or fixed-point libraries for high-value systems.
+```
