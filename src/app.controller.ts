@@ -1,12 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('health')
+  getHello(): object {
+    const uptime = process.uptime();
+    const { heapTotal, heapUsed } = process.memoryUsage();
+    return {
+      uptime: `${uptime} sec`,
+      heapTotal: `${heapTotal} bytes`,
+      heapUsed: `${heapUsed} bytes`,
+    };
   }
 }
