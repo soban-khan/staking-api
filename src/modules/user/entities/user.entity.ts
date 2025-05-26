@@ -14,8 +14,20 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
   @Column({ unique: true, length: 42 })
   walletAddress: string;
+
+  @Column({ unique: true, length: 42 })
+  email: string;
+
+  @Column({ length: 500 })
+  password: string;
 
   @Column('decimal', { precision: 18, scale: 8, default: 0 })
   totalBalance: number;
@@ -28,12 +40,6 @@ export class User {
 
   @Column('decimal', { precision: 18, scale: 8, default: 0 })
   totalRewards: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @OneToMany(() => StakingPosition, (position) => position.user)
   stakingPositions: StakingPosition[];

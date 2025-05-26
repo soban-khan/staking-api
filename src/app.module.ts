@@ -7,7 +7,7 @@ import { TransactionModule } from './modules/transaction/transaction.module';
 import { ApyConfigurationModule } from './modules/apy-configuration/apy-configuration.module';
 import { RewardModule } from './modules/reward/reward.module';
 import { StakingModule } from './modules/staking/staking.module';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { APP_GUARD } from '@nestjs/core';
 
@@ -19,6 +19,7 @@ import { APP_GUARD } from '@nestjs/core';
     ApyConfigurationModule,
     RewardModule,
     StakingModule,
+    JwtModule.register({}),
   ],
   controllers: [AppController],
   providers: [
