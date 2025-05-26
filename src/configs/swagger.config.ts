@@ -1,7 +1,7 @@
 import { DocumentBuilder } from '@nestjs/swagger';
 
 export const swaggerConfig = new DocumentBuilder()
-  .setTitle('financial-ledger')
+  .setTitle('Staking-API')
   .setDescription(
     'A simple backend service for staking functionality, built with NestJS and PostgreSQL.',
   )
