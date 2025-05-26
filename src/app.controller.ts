@@ -1,9 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
+import { Public } from './guards/public.decorator';
 
 @Controller()
 export class AppController {
   constructor() {}
 
+  @Public()
   @Get('health')
   getHello(): object {
     const uptime = process.uptime();
