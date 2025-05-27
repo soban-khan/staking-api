@@ -116,7 +116,7 @@ export class UserService {
     }
   }
 
-  async findOne(id: number): Promise<object> {
+  async findOne(id: number): Promise<User> {
     try {
       const user = await this.usersRepository.findOne({
         where: { id },
@@ -172,5 +172,15 @@ export class UserService {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
     }
+  }
+
+  async updateBalances(
+    userId: number,
+    updates: Partial<
+      Pick<User, 'availableBalance' | 'stakedBalance' | 'totalRewards'>
+    >,
+  ): Promise<User> {
+    await this.usersRepository.update(userId, updates);
+    return this.findOne(userId);
   }
 }
