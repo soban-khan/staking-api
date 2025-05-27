@@ -96,19 +96,81 @@ export class UserService {
     };
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(): Promise<{ results: Array<object>; totalCount: number }> {
+    try {
+      const results = await this.usersRepository.findAndCount({
+        select: ['id', 'email', 'walletAddress', 'availableBalance'],
+        order: {
+          id: 'ASC',
+        },
+      });
+      return { results: results[0], totalCount: results[1] };
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<object> {
+    try {
+      const user = await this.usersRepository.findOne({
+        where: { id },
+      });
+      if (!user) throw new HttpException('No Such User', HttpStatus.NOT_FOUND);
+
+      return user;
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      const userToUpdate = await this.usersRepository.findOne({
+        where: { id },
+      });
+      if (!userToUpdate)
+        throw new HttpException('User does Not Exist', HttpStatus.NOT_FOUND);
+
+      await this.usersRepository.update(id, updateUserDto);
+      return {};
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    try {
+      const deletedUser = await this.usersRepository.delete(id);
+      if (!deletedUser.affected)
+        throw new HttpException('No Such User', HttpStatus.NOT_FOUND);
+
+      return {};
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 }
