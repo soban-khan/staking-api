@@ -16,5 +16,6 @@ import { ApyConfigurationModule } from '../apy-configuration/apy-configuration.m
   ],
   controllers: [StakingController],
   providers: [StakingService],
+  exports: [StakingService],
 })
 export class StakingModule {}

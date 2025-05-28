@@ -15,7 +15,7 @@ export class StakingController {
     description: 'Bad request - insufficient balance or invalid parameters',
   })
   stake(@Request() req, @Body() createStakeDto: CreateStakingDto) {
-    return this.stakingService.stake(req.user.id, createStakeDto);
+    return this.stakingService.stake(req.user.sub, createStakeDto);
   }
 
   @Post('unstake')
@@ -23,7 +23,7 @@ export class StakingController {
   @ApiResponse({ status: 200, description: 'Tokens unstaked successfully' })
   @ApiResponse({ status: 404, description: 'Staking position not found' })
   unstake(@Request() req, @Body() unstakeDto: UnstakeDto) {
-    return this.stakingService.unstake(req.user.id, unstakeDto);
+    return this.stakingService.unstake(req.user.sub, unstakeDto);
   }
 
   @Get('positions')
@@ -33,7 +33,7 @@ export class StakingController {
     description: 'User positions retrieved successfully',
   })
   getUserPositions(@Request() req) {
-    return this.stakingService.findUserPositions(req.user.id);
+    return this.stakingService.findUserPositions(req.user.sub);
   }
 
   @Get('positions/:id')
