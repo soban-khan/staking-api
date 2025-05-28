@@ -99,6 +99,16 @@ Rewards are calculated using a simple time-weighted APR formula:
 reward = (amount * APR / 100) * (daysStaked / 365)
 ```
 
+## Key Features Implemented
+
+1. **Database-managed Token Locking**: All staking logic handled via PostgreSQL
+2. **Flexible APY System**: Time-based APY configurations with different lock periods
+3. **Automated Reward Calculation**: Daily cron job for reward distribution
+4. **Comprehensive Transaction History**: Full audit trail
+5. **Swagger Documentation**: Complete API documentation
+6. **TypeORM Integration**: Type-safe database operations
+7. **Validation & Error Handling**: Input validation and proper error responses
+
 ## Design Decisions and Trade-offs
 
 ### Data Storage
