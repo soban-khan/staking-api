@@ -1,16 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Request } from '@nestjs/common';
 import { StakingService } from './staking.service';
 import { CreateStakingDto, UnstakeDto } from './dto/create-staking.dto';
-import { UpdateStakingDto } from './dto/update-staking.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('staking')

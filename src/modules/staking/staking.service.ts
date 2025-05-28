@@ -6,7 +6,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateStakingDto, UnstakeDto } from './dto/create-staking.dto';
-import { UpdateStakingDto } from './dto/update-staking.dto';
 import { StakingPosition } from './entities/staking.entity';
 import { UserService } from '../user/user.service';
 import { InjectRepository } from '@nestjs/typeorm';
