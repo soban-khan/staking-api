@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { Repository } from 'typeorm';
@@ -12,27 +11,26 @@ export class TransactionService {
     private readonly transactionRepository: Repository<Transaction>,
   ) {}
 
-  create(createTransactionDto: CreateTransactionDto) {
-    return 'This action adds a new transaction';
-  }
-
-  createTransaction(payload) {
+  createTransaction(payload: CreateTransactionDto) {
     return this.transactionRepository.save(payload);
   }
 
-  findAll() {
-    return `This action returns all transaction`;
+  async findUserTransactions(userId: number): Promise<Transaction[]> {
+    return this.transactionRepository.find({
+      where: { userId },
+      relations: ['position'],
+      order: { createdAt: 'DESC' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
-  }
-
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async findByType(
+    userId: number,
+    transactionType: string,
+  ): Promise<Transaction[]> {
+    return this.transactionRepository.find({
+      where: { userId, transactionType: transactionType as any },
+      relations: ['position'],
+      order: { createdAt: 'DESC' },
+    });
   }
 }
