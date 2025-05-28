@@ -1,34 +1,61 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ApyConfigurationService } from './apy-configuration.service';
-import { CreateApyConfigurationDto } from './dto/create-apy-configuration.dto';
-import { UpdateApyConfigurationDto } from './dto/update-apy-configuration.dto';
+import { CreateApyConfigDto } from './dto/create-apy-configuration.dto';
+import { UpdateApyConfigDto } from './dto/update-apy-configuration.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-@Controller('apy-configuration')
+@Controller('apy-config')
 export class ApyConfigurationController {
-  constructor(private readonly apyConfigurationService: ApyConfigurationService) {}
+  constructor(private readonly apyConfigService: ApyConfigurationService) {}
 
   @Post()
-  create(@Body() createApyConfigurationDto: CreateApyConfigurationDto) {
-    return this.apyConfigurationService.create(createApyConfigurationDto);
+  @ApiOperation({ summary: 'Create new APY configuration (Admin only)' })
+  @ApiResponse({
+    status: 201,
+    description: 'APY configuration created successfully',
+  })
+  create(@Body() createApyConfigDto: CreateApyConfigDto) {
+    return this.apyConfigService.create(createApyConfigDto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all APY configurations' })
+  @ApiResponse({
+    status: 200,
+    description: 'APY configurations retrieved successfully',
+  })
   findAll() {
-    return this.apyConfigurationService.findAll();
+    return this.apyConfigService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.apyConfigurationService.findOne(+id);
+    return this.apyConfigService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateApyConfigurationDto: UpdateApyConfigurationDto) {
-    return this.apyConfigurationService.update(+id, updateApyConfigurationDto);
+  @ApiOperation({ summary: 'Update APY configuration (Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'APY configuration updated successfully',
+  })
+  update(
+    @Param('id') id: string,
+    @Body() updateApyConfigDto: UpdateApyConfigDto,
+  ) {
+    return this.apyConfigService.update(+id, updateApyConfigDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.apyConfigurationService.remove(+id);
+    return this.apyConfigService.remove(+id);
   }
 }

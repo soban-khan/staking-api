@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateApyConfigurationDto } from './create-apy-configuration.dto';
+import { CreateApyConfigDto } from './create-apy-configuration.dto';
 
-export class UpdateApyConfigurationDto extends PartialType(CreateApyConfigurationDto) {}
+export class UpdateApyConfigDto extends PartialType(CreateApyConfigDto) {}
