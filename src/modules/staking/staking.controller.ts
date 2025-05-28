@@ -32,27 +32,25 @@ export class StakingController {
   @ApiOperation({ summary: 'Unstake tokens' })
   @ApiResponse({ status: 200, description: 'Tokens unstaked successfully' })
   @ApiResponse({ status: 404, description: 'Staking position not found' })
-  async unstake(@Request() req, @Body() unstakeDto: UnstakeDto) {
+  unstake(@Request() req, @Body() unstakeDto: UnstakeDto) {
     return this.stakingService.unstake(req.user.id, unstakeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.stakingService.findAll();
+  @Get('positions')
+  @ApiOperation({ summary: 'Get user staking positions' })
+  @ApiResponse({
+    status: 200,
+    description: 'User positions retrieved successfully',
+  })
+  getUserPositions(@Request() req) {
+    return this.stakingService.findUserPositions(req.user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.stakingService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStakingDto: UpdateStakingDto) {
-    return this.stakingService.update(+id, updateStakingDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.stakingService.remove(+id);
+  @Get('positions/:id')
+  @ApiOperation({ summary: 'Get specific staking position' })
+  @ApiResponse({ status: 200, description: 'Position retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Position not found' })
+  getPosition(@Param('id') id: string) {
+    return this.stakingService.findPosition(+id);
   }
 }

@@ -139,19 +139,51 @@ export class StakingService {
     }
   }
 
-  findAll() {
-    return `This action returns all staking`;
+  async findUserPositions(userId: number): Promise<StakingPosition[]> {
+    try {
+      return this.stakingRepository.find({
+        where: { userId },
+        relations: ['apyConfig'],
+        order: { createdAt: 'DESC' },
+      });
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} staking`;
+  async findPosition(positionId: number): Promise<StakingPosition> {
+    try {
+      const position = await this.stakingRepository.findOne({
+        where: { id: positionId },
+        relations: ['user', 'apyConfig', 'rewardHistory'],
+      });
+
+      if (!position) {
+        throw new NotFoundException('Staking position not found');
+      }
+
+      return position;
+    } catch (error) {
+      if (error.status)
+        throw new HttpException(error.message, error.getStatus());
+      else
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 
-  update(id: number, updateStakingDto: UpdateStakingDto) {
-    return `This action updates a #${id} staking`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} staking`;
+  async findActivePositions(): Promise<StakingPosition[]> {
+    return this.stakingRepository.find({
+      where: { status: StakingStatus.ACTIVE },
+      relations: ['user'],
+    });
   }
 }
